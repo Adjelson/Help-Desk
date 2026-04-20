@@ -1,6 +1,6 @@
 # Compiled class file
 *.class
-
+*.doc.docx
 # Log file
 *.log
 
