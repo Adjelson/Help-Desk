@@ -3,7 +3,7 @@
 *.doc.docx
 # Log file
 *.log
-
+.claude/
 # BlueJ files
 *.ctxt
 
