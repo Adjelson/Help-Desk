@@ -1,0 +1,6 @@
+{
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -javaagent:${env:USERPROFILE}/.m2/repository/org/projectlombok/lombok/1.18.32/lombok-1.18.32.jar",
+  "java.compile.nullAnalysis.mode": "disabled",
+  "spring-boot.ls.problem.application-properties.UNKNOWN_PROPERTY_KEY": "IGNORE",
+  "spring-boot.ls.problem.application-yaml.UNKNOWN_PROPERTY": "IGNORE"
+}

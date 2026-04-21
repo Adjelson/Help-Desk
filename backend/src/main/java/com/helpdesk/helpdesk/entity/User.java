@@ -1,20 +1,30 @@
 package com.helpdesk.helpdesk.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+
 @Entity
 @Table(name = "users")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class User implements UserDetails {
 
     @Id
@@ -45,8 +55,9 @@ public class User implements UserDetails {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    @Builder.Default
     private Set<Role> roles = new HashSet<>();
+
+    public User() {}
 
     @PrePersist
     void prePersist() {
@@ -54,6 +65,9 @@ public class User implements UserDetails {
         updatedAt = LocalDateTime.now();
     }
 
+    /**
+     * 
+     */
     @PreUpdate
     void preUpdate() {
         updatedAt = LocalDateTime.now();
@@ -66,7 +80,23 @@ public class User implements UserDetails {
                 .collect(Collectors.toSet());
     }
 
-    @Override public String getPassword()  { return senha; }
-    @Override public String getUsername()  { return email; }
-    @Override public boolean isEnabled()   { return ativo; }
+    // UserDetails — delegam para os getters de domínio
+    @Override public String getPassword() { return senha; }
+    @Override public String getUsername() { return email; }
+    @Override public boolean isEnabled()  { return ativo; }
+
+    public Long getId()                { return id; }
+    public String getNome()            { return nome; }
+    public String getEmail()           { return getUsername(); }
+    public String getSenha()           { return getPassword(); }
+    public boolean isAtivo()           { return isEnabled(); }
+    public LocalDateTime getCreatedAt(){ return createdAt; }
+    public LocalDateTime getUpdatedAt(){ return updatedAt; }
+    public Set<Role> getRoles()        { return roles; }
+
+    public void setNome(String nome)      { this.nome = nome; }
+    public void setEmail(String email)    { this.email = email; }
+    public void setSenha(String senha)    { this.senha = senha; }
+    public void setAtivo(boolean ativo)   { this.ativo = ativo; }
+    public void setRoles(Set<Role> roles) { this.roles = roles; }
 }
